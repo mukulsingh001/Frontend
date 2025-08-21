@@ -2,6 +2,9 @@ name: Allow Self-Approval
 
 on:
   pull_request:
+    branches:
+      - main
+      - develop
     types: [opened, reopened, synchronize, ready_for_review]
 
 permissions:
