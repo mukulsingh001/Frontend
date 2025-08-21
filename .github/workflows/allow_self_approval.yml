@@ -10,11 +10,11 @@ permissions:
 jobs:
   check_self_approval:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.author_association == 'OWNER'
+    if: github.event.pull_request.user.login == github.repository_owner
     steps:
       - name: Approve PR
         id: approve-pr
         run: |
-          gh pr review ${{ github.event.number }} --approve -b "Self-approved by workflow"
+          gh pr review ${{ github.event.number }} --approve -b "Self-approved by workflow."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
