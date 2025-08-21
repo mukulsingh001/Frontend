@@ -1,0 +1,20 @@
+name: Allow Self-Approval
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  check_self_approval:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.author_association == 'OWNER'
+    steps:
+      - name: Approve PR
+        id: approve-pr
+        run: |
+          gh pr review ${{ github.event.number }} --approve -b "Self-approved by workflow"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
