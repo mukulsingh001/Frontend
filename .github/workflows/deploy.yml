@@ -1,9 +1,9 @@
-name: Deploy React App to GitHub Pages on Tag
+name: Deploy on specific release branch
 
 on:
   push:
-    tags:
-      - 'v*' # This triggers the workflow for any tag starting with 'v', e.g., v1.0, v2.1.3
+    branches:
+      - 'release/1.0.0'
 
 jobs:
   build-and-deploy:
