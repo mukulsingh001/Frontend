@@ -1,28 +1,30 @@
-name: Deploy to GitHub Pages
+name: Deploy React App to GitHub Pages on Tag
 
 on:
   push:
     tags:
-      - 'v*.*.*'  # Listens for tags like v1.0.0, v2.1.0, etc.
-  release:
-    types: [created] # Listens for a new release being created
+      - 'v*' # This triggers the workflow for any tag starting with 'v', e.g., v1.0, v2.1.3
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Install dependencies 🏗️
-        run: |
-          npm install
-          npm run build
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Deploy to GitHub Pages 🚀
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          force_orphan: true
-
