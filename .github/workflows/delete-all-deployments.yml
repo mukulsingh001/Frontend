@@ -1,0 +1,30 @@
+name: Delete All Deployments
+
+on:
+  workflow_dispatch:
+
+jobs:
+  delete-all-deployments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete all deployments
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          OWNER=$(echo "${{ github.repository }}" | cut -d'/' -f1)
+          REPO=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+
+          # Get the list of all deployment IDs
+          deployment_ids=$(curl -s -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/${OWNER}/${REPO}/deployments" | jq -r '.[].id')
+
+          # Loop through and delete each deployment
+          for id in $deployment_ids; do
+            echo "Deleting deployment with ID: $id"
+            curl -s -X DELETE \
+              -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/${OWNER}/${REPO}/deployments/${id}"
+          done
+
+          echo "All deployments have been deleted."
+
