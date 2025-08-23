@@ -12,7 +12,7 @@ import SignUp from "./pages/signup/SignUp";
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello Dev!</h1>
+      <h1 className="text-3xl font-bold underline">Hello Dev! hiddddd</h1>
       <Routes>
         <Route path="/" element={<BaseLayout />}>
           <Route path="/login" element={<Login />} />
